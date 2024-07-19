@@ -27,11 +27,21 @@ class FileViewSet(
             file_objs = []
 
             for uploaded_file in files:
-                file_obj = File(file=uploaded_file)
-                file_obj.save()
-                file_objs.append(file_obj)
+                serializer = self.serializer_class(data={'file': uploaded_file})
 
-                process_file.delay(file_obj.id)
+                if serializer.is_valid():
+                    file_obj = serializer.save()
+                    file_objs.append(file_obj)
+
+                    try:
+                        process_file.delay(file_obj.id)
+                    except:
+                        file_obj.delete()
+                        return Response({'error': 'Ошибка при запуске асинхронной задачи.'},
+                                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
             serializer = FileSerializer(file_objs, many=True)
 
