@@ -1,11 +1,13 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from rest_framework import mixins
+from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from .models import File
 from .serializers import FileSerializer
+from .tasks import process_file
 
 
 class FileViewSet(
@@ -22,15 +24,21 @@ class FileViewSet(
     def upload(self, request):
         if request.method == 'POST':
             files = request.FILES.getlist('file')
+            file_objs = []
 
             for uploaded_file in files:
-                # Создаем и сохраняем объект File для каждого файла
                 file_obj = File(file=uploaded_file)
                 file_obj.save()
+                file_objs.append(file_obj)
 
-            return HttpResponseRedirect('/files/')
+                process_file.delay(file_obj.id)
 
+            serializer = FileSerializer(file_objs, many=True)
+
+            response_data = {
+                'files': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
 
         elif request.method == 'GET':
-            # Возвращаем HTML-форму для загрузки файлов
             return render(request, 'app/upload_form.html')
