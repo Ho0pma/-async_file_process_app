@@ -74,11 +74,16 @@ WSGI_APPLICATION = 'web.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+  'default': {
+      'ENGINE': 'django.db.backends.postgresql',
+      'NAME': 'django_db',      # Имя базы данных
+      'USER': 'user',           # Имя пользователя
+      'PASSWORD': 'pass',       # Пароль пользователя
+      'HOST': 'localhost',      # Имя хоста (для Docker Compose)
+      'PORT': '5432',           # Порт
+  }
 }
+
 
 
 # Password validation
