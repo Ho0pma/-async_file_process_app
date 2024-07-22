@@ -55,6 +55,7 @@ class FileViewSet(
         elif request.method == 'GET':
             return render(request, 'app/upload_form.html')
 
+
 class CustomApiRootView(APIView):
     def get(self, request, *args, **kwargs):
         return Response({
