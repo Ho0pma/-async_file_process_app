@@ -35,7 +35,8 @@ services:
     build:
       context: .
       dockerfile: web/Dockerfile
-
+    env_file:
+      - environments/web.env
     command: celery -A web worker --loglevel=info
     volumes:
       - .:/code
