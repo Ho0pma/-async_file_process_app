@@ -3,6 +3,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from .models import File
@@ -52,3 +54,10 @@ class FileViewSet(
 
         elif request.method == 'GET':
             return render(request, 'app/upload_form.html')
+
+class CustomApiRootView(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'files': reverse('file-list', request=request, format=kwargs.get('format')),
+            'files-upload': reverse('file-upload', request=request, format=kwargs.get('format')),
+        })
