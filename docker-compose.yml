@@ -4,10 +4,8 @@ version: '3'
 services:
   db:
     image: postgres:latest
-    environment:
-      POSTGRES_DB: django_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+    env_file:
+      - environments/db.env
     volumes:
       - django_db_volume:/var/lib/postgresql/data
     ports:
@@ -57,6 +55,8 @@ services:
     build:
       context: .
       dockerfile: web/Dockerfile
+    env_file:
+      - environments/web.env
     volumes:
       - ./web:/code
     ports:
