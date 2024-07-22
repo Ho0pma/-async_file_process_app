@@ -42,7 +42,7 @@ services:
     volumes:
       - .:/code
     healthcheck:
-      test: ["CMD-SHELL", "pgrep -f 'celery worker' || exit 1"]
+      test: [ "CMD-SHELL", "pgrep -f 'celery worker' || exit 1" ]
       interval: 1s
       timeout: 2s
       retries: 3
@@ -74,6 +74,22 @@ services:
       celery_worker:
         condition: service_healthy
 
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./web:/code
+    healthcheck:
+      test: [ "CMD", "nginx", "-t" ]
+      interval: 1s
+      timeout: 2s
+      retries: 3
+    depends_on:
+      web:
+        condition: service_healthy
 
 volumes:
   django_db_volume:
