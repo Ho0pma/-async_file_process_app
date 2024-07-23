@@ -86,9 +86,9 @@ services:
       - ./web:/code
     healthcheck:
       test: [ "CMD", "nginx", "-t" ]
-      interval: 1s
-      timeout: 2s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
     depends_on:
       web:
         condition: service_healthy
