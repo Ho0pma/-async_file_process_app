@@ -12,9 +12,9 @@ services:
       - "5432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U user -d django_db" ]
-      interval: 1s
-      timeout: 2s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   redis:
     image: redis:latest
@@ -24,9 +24,9 @@ services:
       - redis:/data
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
-      interval: 1s
-      timeout: 2s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -42,9 +42,9 @@ services:
       - .:/code
     healthcheck:
       test: [ "CMD-SHELL", "pgrep -f 'celery worker' || exit 1" ]
-      interval: 1s
-      timeout: 2s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
     working_dir: /code/web
     depends_on:
       db:
@@ -64,9 +64,9 @@ services:
       - "8000:8000"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000" ]
-      interval: 1s
-      timeout: 2s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
