@@ -18,4 +18,4 @@
 
 Посмотреть работу проекта можно перейдя по домену: www.hoopmaserver.ru
 
-стек: [python, Django, Django REST Framework, Postgres, redis, celery, Docker, docker-compose, gunicorn, nginx, pytest, coverage, shell]
+стек: [python, Django, Django REST Framework, Postgres, redis, celery, Docker, docker-compose, gunicorn, nginx, pytest, coverage, Shell]
