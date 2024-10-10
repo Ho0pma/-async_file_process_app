@@ -16,6 +16,6 @@
   - для домена настроен SSL протокол (работает подключение по https)
   - для проксирования запросов к gunicorn и обработки SSL-сертификата использовал nginx
 
-Посмотреть работу проекта можно перейдя по домену: www.hoopmaserver.ru
+Посмотреть работу проекта можно перейдя по домену: www.hoopmaserver.ru (не активно)
 
 стек: [python, Django, Django REST Framework, Postgres, redis, celery, Docker, docker-compose, gunicorn, nginx, pytest, coverage, Shell]
